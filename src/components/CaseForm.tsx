@@ -48,7 +48,10 @@ const schema = z.object({
     policeStation: z.string().default(''),
     firNumber: z.string().default(''),
     sections: z.string().default(''),
-  }).optional(),
+    ipcSections: z.array(z.string()).default([]),
+    crpcSections: z.array(z.string()).default([]),
+    evidenceActSections: z.array(z.string()).default([]),
+  }),
   notes: z.string().default(''),
 });
 
@@ -69,7 +72,7 @@ export const CaseForm = ({ onClose, initialData }: CaseFormProps) => {
       status: CaseStatus.PENDING,
       currentProceeding: ProceedingType.MISCELLANEOUS,
       nextDate: new Date().toISOString().split('T')[0],
-      legalSections: { policeStation: '', firNumber: '', sections: '' },
+      legalSections: initialData?.legalSections || { policeStation: '', firNumber: '', sections: '', ipcSections: [], crpcSections: [], evidenceActSections: [] },
       notes: '',
     }
   });

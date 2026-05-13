@@ -1,20 +1,38 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Legal Diary Pro - Mobile Setup Guide
 
-# Run and deploy your AI Studio app
+Is project ko Mobile APK mein badalne ke liye neeche diye gaye steps follow karein.
 
-This contains everything you need to run your app locally.
+## 1. Local Setup
+1. Node.js install karein.
+2. Commands run karein:
+   ```bash
+   npm install
+   ```
 
-View your app in AI Studio: https://ai.studio/apps/974c4869-c17c-4a91-9393-797c7de95436
+## 2. PWA Testing
+PWA ke roop mein chalane ke liye:
+```bash
+npm run build
+npm run preview
+```
 
-## Run Locally
+## 3. Expo Mobile Build (APK)
+APK banane ke liye hum **EAS Build** ka use karenge:
+1. EAS CLI install karein:
+   ```bash
+   npm install -g eas-cli
+   ```
+2. Expo account mein login karein:
+   ```bash
+   eas login
+   ```
+3. Build start karein:
+   ```bash
+   eas build -p android --profile preview
+   ```
 
-**Prerequisites:**  Node.js
+## 4. Mobile Installation
+EAS build poora hone ke baad aapko ek link/QR code milega. Use scan karke aap directly APK download karke install kar sakte hain.
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+*Created with ❤️ via AI Studio*

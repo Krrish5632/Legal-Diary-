@@ -56,6 +56,7 @@ export interface LegalSections {
   ipcSections: string[];
   crpcSections: string[];
   evidenceActSections: string[];
+  sections?: string; // For string-based input
 }
 
 export interface CaseHistoryEntry {
