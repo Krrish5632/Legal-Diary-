@@ -29,4 +29,60 @@ export default function App() {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard': return <Dashboard setActiveTab={setActiveTab} />;
-      case 'c
+      case 'cases': return <CaseList onAddCase={handleAddCase} onEditCase={handleEditCase} />;
+      case 'diary': return <Diary onAddCase={handleAddCase} />;
+      case 'causelist': return <CauseListView />;
+      case 'search': return <CaseList onAddCase={handleAddCase} onEditCase={handleEditCase} />;
+      case 'settings': return <Settings />;
+      default: return (
+        <div className="flex flex-col items-center justify-center h-full p-20 text-center">
+          <h2 className="text-2xl font-display font-bold">Coming Soon</h2>
+          <p className="text-zinc-500 mt-2">Yeh feature jald aayega.</p>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen bg-zinc-50">
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <main className="flex-1 lg:ml-64 flex flex-col min-h-screen overflow-hidden">
+        <div className="h-16 bg-white/50 backdrop-blur-md border-b sticky top-0 z-30 px-4 md:px-8 flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              <Database size={10} />
+              <span>Offline</span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              <Shield size={10} />
+              <span>Secure</span>
+            </div>
+          </div>
+          <p className="text-xs font-bold text-zinc-400">{format(new Date(), 'dd MMM yyyy')}</p>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="h-full"
+            >
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </main>
+      <AnimatePresence>
+        {isFormOpen && (
+          <CaseForm
+            onClose={() => { setIsFormOpen(false); setSelectedCase(undefined); }}
+            initialData={selectedCase}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
