@@ -21,7 +21,7 @@ import { storage } from '../lib/storage';
 import { LegalCase, CaseStatus } from '../types';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
-
+import { exportCasePDF } from '../lib/pdfExport';
 interface CaseListProps {
   onAddCase: () => void;
   onEditCase: (c: LegalCase) => void;
@@ -149,6 +149,13 @@ export const CaseList = ({ onAddCase, onEditCase }: CaseListProps) => {
                     >
                       <Trash2 size={18} />
                     </button>
+                    <button
+  onClick={(e) => { e.stopPropagation(); exportCasePDF(c); }}
+  className="p-2 text-zinc-400 hover:text-legal-green hover:bg-green-50 rounded-lg transition-all"
+  title="Download PDF"
+>
+  <ExternalLink size={18} />
+</button>
                     <button className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-all">
                       <MoreVertical size={18} />
                     </button>
