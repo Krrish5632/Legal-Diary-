@@ -39,14 +39,19 @@ jobs:
           npx cap add android || true
           npx cap sync android
 
+      - name: Grant permissions in Manifest
+        run: |
+          sed -i 's|</manifest>|<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29"/><uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/></manifest>|' android/app/src/main/AndroidManifest.xml
+
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: LegalDiary-Android-APK
+          name: LegalDiaryPro-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
