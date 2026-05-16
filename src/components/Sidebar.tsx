@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   LayoutDashboard, Calendar, Briefcase, Search,
-  FileText, Settings, Scale, Menu, X
+  FileText, Settings, Scale, Menu, X,
+  BookOpen, LogOut
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { getSettings, AppSettings } from './Settings';
@@ -9,9 +10,10 @@ import { getSettings, AppSettings } from './Settings';
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  onLogout?: () => void;
 }
 
-export const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
+export const Sidebar = ({ activeTab, setActiveTab, onLogout }: SidebarProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [settings, setSettings] = React.useState<AppSettings>(getSettings());
 
@@ -25,69 +27,87 @@ export const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { id: 'diary', icon: Calendar, label: 'Legal Diary' },
     { id: 'cases', icon: Briefcase, label: 'Cases' },
-    { id: 'search', icon: Search, label: 'Advanced Search' },
     { id: 'causelist', icon: FileText, label: 'Cause List' },
+    { id: 'search', icon: Search, label: 'Advanced Search' },
+    { id: 'library', icon: BookOpen, label: 'Legal Library' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 
   const initials = settings.advocateName
-    .split(' ')
-    .map(w => w[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase() || 'A';
+    .split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'A';
 
   return (
     <>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg"
-      >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
+      <button onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-xl shadow-lg transition-all"
+        style={{ background: '#0a0f1e', border: '1px solid rgba(255,255,255,0.1)' }}>
+        {isOpen ? <X size={20} className="text-white" /> : <Menu size={20} className="text-white" />}
       </button>
 
+      {isOpen && (
+        <div className="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)} />
+      )}
+
       <div className={cn(
-        "fixed inset-y-0 left-0 z-40 w-64 bg-legal-dark text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0",
+        "fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col",
         isOpen ? "translate-x-0" : "-translate-x-full"
-      )}>
-        <div className="p-6 flex items-center gap-3">
-          <div className="w-10 h-10 bg-legal-green rounded-xl flex items-center justify-center">
-            <Scale className="text-white" size={24} />
+      )} style={{ background: 'linear-gradient(180deg, #0a0f1e 0%, #111827 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+
+        {/* Logo */}
+        <div className="p-6 flex items-center gap-3 border-b border-white/5">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #14532d, #16a34a)', boxShadow: '0 0 15px rgba(22,163,74,0.3)' }}>
+            <Scale className="text-white" size={22} />
           </div>
           <div>
-            <h1 className="text-xl font-display font-bold">Legal Diary</h1>
-            <p className="text-[10px] text-zinc-400 uppercase tracking-widest">Pro Edition</p>
+            <h1 className="text-lg font-display font-bold text-white">Legal Diary</h1>
+            <p className="text-[9px] text-zinc-500 uppercase tracking-widest">Pro Edition</p>
           </div>
         </div>
 
-        <nav className="mt-8 px-4 space-y-2">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {menuItems.map(item => (
+            <button key={item.id}
               onClick={() => { setActiveTab(item.id); setIsOpen(false); }}
               className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
+                "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left",
                 activeTab === item.id
-                  ? "bg-legal-green text-white shadow-lg shadow-legal-green/20"
-                  : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                  ? "text-white shadow-lg"
+                  : "text-zinc-500 hover:text-zinc-300 hover:bg-white/5"
               )}
-            >
-              <item.icon size={20} />
-              <span className="font-medium">{item.label}</span>
+              style={activeTab === item.id ? {
+                background: 'linear-gradient(135deg, #14532d, #16a34a)',
+                boxShadow: '0 4px 15px rgba(22,163,74,0.25)'
+              } : {}}>
+              <item.icon size={18} />
+              <span className="font-medium text-sm">{item.label}</span>
             </button>
           ))}
         </nav>
 
-        <div className="absolute bottom-8 left-4 right-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-legal-gold flex items-center justify-center font-bold text-sm text-white">
+        {/* Profile + Logout */}
+        <div className="p-3 border-t border-white/5 space-y-2">
+          <div className="p-3 rounded-2xl flex items-center gap-3"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0"
+              style={{ background: 'linear-gradient(135deg, #d4af37, #c5a059)', color: '#0a0f1e' }}>
               {initials}
             </div>
-            <div className="overflow-hidden">
-              <p className="text-sm font-medium truncate">{settings.advocateName}</p>
-              <p className="text-[10px] text-zinc-500 truncate">{settings.court || 'Settings mein court daalen'}</p>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-white truncate">{settings.advocateName || 'Advocate'}</p>
+              <p className="text-[10px] text-zinc-500 truncate">{settings.court || 'Set court in Settings'}</p>
             </div>
           </div>
+
+          {onLogout && (
+            <button onClick={onLogout}
+              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-all">
+              <LogOut size={16} />
+              <span className="text-sm font-medium">Logout</span>
+            </button>
+          )}
         </div>
       </div>
     </>
