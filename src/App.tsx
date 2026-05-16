@@ -6,15 +6,26 @@ import { Diary } from './components/Diary';
 import { CauseListView } from './components/CauseListView';
 import { Settings } from './components/Settings';
 import { CaseForm } from './components/CaseForm';
+import { Login } from './components/Login';
 import { LegalCase } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 import { Shield, Database } from 'lucide-react';
 import { format } from 'date-fns';
 
+const SESSION_KEY = 'ld_session';
+
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+    return sessionStorage.getItem(SESSION_KEY) === '1';
+  });
   const [activeTab, setActiveTab] = React.useState('dashboard');
   const [isFormOpen, setIsFormOpen] = React.useState(false);
   const [selectedCase, setSelectedCase] = React.useState<LegalCase | undefined>();
+
+  const handleLoginSuccess = () => {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    setIsLoggedIn(true);
+  };
 
   const handleEditCase = (c: LegalCase) => {
     setSelectedCase(c);
@@ -25,6 +36,10 @@ export default function App() {
     setSelectedCase(undefined);
     setIsFormOpen(true);
   };
+
+  if (!isLoggedIn) {
+    return <Login onSuccess={handleLoginSuccess} />;
+  }
 
   const renderContent = () => {
     switch (activeTab) {
@@ -48,7 +63,7 @@ export default function App() {
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="flex-1 lg:ml-64 flex flex-col min-h-screen overflow-hidden">
         <div className="h-16 bg-white/50 backdrop-blur-md border-b sticky top-0 z-30 px-4 md:px-8 flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2">
             <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
               <Database size={10} />
               <span>Offline</span>
@@ -60,6 +75,7 @@ export default function App() {
           </div>
           <p className="text-xs font-bold text-zinc-400">{format(new Date(), 'dd MMM yyyy')}</p>
         </div>
+
         <div className="flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
@@ -75,6 +91,7 @@ export default function App() {
           </AnimatePresence>
         </div>
       </main>
+
       <AnimatePresence>
         {isFormOpen && (
           <CaseForm
