@@ -25,6 +25,7 @@ import { exportCasePDF } from '../lib/pdfExport';
 interface CaseListProps {
   onAddCase: () => void;
   onEditCase: (c: LegalCase) => void;
+  onViewNotes?: (c: LegalCase) => void;
 }
 
 export const CaseList = ({ onAddCase, onEditCase }: CaseListProps) => {
