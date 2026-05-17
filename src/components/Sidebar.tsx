@@ -2,7 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard, Calendar, Briefcase, Search,
   FileText, Settings, Scale, Menu, X,
-  BookOpen, LogOut
+  LogOut
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { getSettings, AppSettings } from './Settings';
@@ -29,7 +29,6 @@ export const Sidebar = ({ activeTab, setActiveTab, onLogout }: SidebarProps) => 
     { id: 'cases', icon: Briefcase, label: 'Cases' },
     { id: 'causelist', icon: FileText, label: 'Cause List' },
     { id: 'search', icon: Search, label: 'Advanced Search' },
-    { id: 'library', icon: BookOpen, label: 'Legal Library' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 
