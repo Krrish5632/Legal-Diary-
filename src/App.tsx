@@ -42,7 +42,6 @@ export default function App() {
       case 'diary': return <Diary onAddCase={() => { setSelectedCase(undefined); setIsFormOpen(true); }} />;
       case 'causelist': return <CauseListView />;
       case 'search': return <CaseList onAddCase={() => { setSelectedCase(undefined); setIsFormOpen(true); }} onEditCase={(c) => { setSelectedCase(c); setIsFormOpen(true); }} />;
-      case 'library': return <LegalLibrary />;
       case 'settings': return <Settings />;
       default: return (
         <div className="flex flex-col items-center justify-center h-full p-20 text-center">
