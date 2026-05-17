@@ -7,7 +7,6 @@ import { CauseListView } from './components/CauseListView';
 import { Settings } from './components/Settings';
 import { CaseForm } from './components/CaseForm';
 import { Login } from './components/Login';
-import { LegalLibrary } from './components/LegalLibrary';
 import { LegalCase } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 import { Shield, Database } from 'lucide-react';
