@@ -58,6 +58,7 @@ const schema = z.object({
 interface CaseFormProps {
   onClose: () => void;
   initialData?: LegalCase;
+   onViewNotes?: (c: LegalCase) => void;
 }
 
 export const CaseForm = ({ onClose, initialData }: CaseFormProps) => {
