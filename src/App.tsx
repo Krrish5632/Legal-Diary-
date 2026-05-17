@@ -11,6 +11,7 @@ import { LegalCase } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 import { Shield, Database } from 'lucide-react';
 import { format } from 'date-fns';
+import { HearingNotes } from './components/HearingNotes';
 
 const SESSION_KEY = 'ld_session';
 
@@ -20,6 +21,7 @@ export default function App() {
   );
   const [activeTab, setActiveTab] = React.useState('dashboard');
   const [isFormOpen, setIsFormOpen] = React.useState(false);
+  const [notesCase, setNotesCase] = React.useState<LegalCase | undefined>();
   const [selectedCase, setSelectedCase] = React.useState<LegalCase | undefined>();
 
   const handleLoginSuccess = () => {
